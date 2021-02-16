@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Radium, {StyleRoot} from 'radium';
+// import Radium, {StyleRoot} from 'radium';
 import Person from './Person/Person';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
 // onClick event
 // https://reactjs.org/docs/events.html#mouse-events
@@ -92,7 +92,9 @@ class App extends Component {
       if(this.state.persons.length <=1) {
         assignedClasses.push(classes.bold);
       }
-      console.log(assignedClasses);
+      // console.log(assignedClasses);
+
+      console.log("classes=", classes.App);
 
     return (
       //<StyleRoot>
