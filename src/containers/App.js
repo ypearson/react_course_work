@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 // onClick event
 // https://reactjs.org/docs/events.html#mouse-events
@@ -17,7 +18,7 @@ class App extends Component {
 
   nameChangeHandler = (event, id) => {
 
-    const personIndex = this.state.persons.findIndex(p=> {
+    const personIndex = this.state.persons.findIndex(p => {
       return p.id === id;
     });
     const person = {
@@ -48,7 +49,6 @@ class App extends Component {
   render() {
 
     let persons = null;
-    let btnClasses='';
 
     if (this.state.showPerson) {
       persons = (
@@ -58,26 +58,21 @@ class App extends Component {
             togglePerson={()=>this.togglePersonHandler()} 
             nameChange={(event, id)=>this.nameChangeHandler(event, id)}/>
       );
+    }
+    
+    console.log("classes=", classes);
 
-      btnClasses = classes.Red;
-      }
-      const assignedClasses = [];
-      if(this.state.persons.length <=2) {
-        assignedClasses.push(classes.red);
-      }
-      if(this.state.persons.length <=1) {
-        assignedClasses.push(classes.bold);
-      }
-
-      console.log("classes=", classes);
+    let cockpit=(
+      <Cockpit
+      title={this.props.appTitle} 
+      show = {this.state.showPerson}
+      persons={this.state.persons} 
+      click={this.togglePersonHandler}></Cockpit>
+    );
 
     return (
         <div className={classes.App}>
-          <h1> Hi, I'm a react app.</h1>
-          <p className={assignedClasses.join(' ')}> This is working</p>
-          <button className={btnClasses} onClick={this.togglePersonHandler}>
-            Toggle Person
-          </button>
+          {cockpit}
           {persons}
         </div>
     );
