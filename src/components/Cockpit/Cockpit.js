@@ -8,8 +8,8 @@ const cockpit = (props) => {
     if(props.show) {
         btnClasses = classes.Red;
     } 
-    console.log('cp classes=',classes)
-    console.log("props.persons.length=", props.persons.length);
+    // console.log('cp classes=',classes);
+    // console.log("props.persons.length=", props.persons.length);
     if(props.persons.length <=2 ) {
         assignedClasses.push(classes.red);
     }
