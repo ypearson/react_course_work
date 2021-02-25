@@ -1,8 +1,9 @@
 import React, { Component, PureComponent } from 'react';
-import Person from './Person/Person'
+import Person from './Person/Person';
+import AuthContext from '../../context/auth-context';
 
 class Persons extends PureComponent {
-// const Persons = (props) => 
+// const Persons = (props) =>
 // {
   state = '';
 
@@ -18,13 +19,13 @@ class Persons extends PureComponent {
   // Instead of checking all prop values, just use PureComponent
   // shouldComponentUpdate(nextProps, nextState) {
   //   console.log("[Persons.js] shouldComponetUpdate");
-  //   if(nextProps.persons !== this.props.persons || 
-  //     nextProps.click    !== this.props.click   || 
+  //   if(nextProps.persons !== this.props.persons ||
+  //     nextProps.click    !== this.props.click   ||
   //     nextProps.changed  !== this.props.changed) {
-        
+
   //     console.log("[Persons.js] shouldComponetUpdate TRUE"); // Update, its NOT the same
   //     return true;
-  //   } 
+  //   }
   //   else {
   //     console.log("[Persons.js] shouldComponetUpdate FALSE"); // Don't update, its the same
   //     return false;
@@ -49,7 +50,7 @@ class Persons extends PureComponent {
 
   render() {
     console.log("[Persons.js] render");
-    return (
+    return  (
       this.props.persons.map((person, index) => {
       return <Person
       name={person.name}

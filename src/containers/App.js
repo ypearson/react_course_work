@@ -4,6 +4,7 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import Aux from '../hoc/Aux';
 import withClass from '../hoc/withClass';
+import AuthContext from '../context/auth-context';
 
 // onClick event
 // https://reactjs.org/docs/events.html#mouse-events
@@ -22,9 +23,10 @@ class App extends Component {
       {id:1, name: 'Manu',      age: 29},
       {id:2, name: 'Stephanie', age: 26},
     ],
-    showPerson: false,
-    showCockpit: true,
-    changeCounter:0,
+    showPerson:    false,
+    showCockpit:   true,
+    changeCounter: 0,
+    authenticated: false,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -88,6 +90,10 @@ class App extends Component {
     this.setState({showPerson:!doesShow});
   }
 
+  loginHandler = () => {
+    this.setState({authenticated:true})
+  };
+
   render() {
     console.log("[App.js] render");
     console.log(this.state);
@@ -101,7 +107,9 @@ class App extends Component {
             persons={this.state.persons}
             deletePerson={this.deletePersonHandler}
             togglePerson={()=>this.togglePersonHandler()}
-            nameChange={(event, id)=>this.nameChangeHandler(event, id)}/>
+            nameChange={(event, id)=>this.nameChangeHandler(event, id)}
+            isAuth={this.state.authenticated}
+            />
       );
     }
     // console.log("classes=", classes);
@@ -111,15 +119,21 @@ class App extends Component {
         title={this.props.appTitle}
         show={this.state.showPerson}
         personsLength={this.state.persons.length}
-        click={this.togglePersonHandler}></Cockpit>
+        click={this.togglePersonHandler}
+        login={this.loginHandler}/>
       );
     }
 
     return (
         <Aux>
           <button onClick={this.deleteCockpitHandler}>Cockpit toggle</button>
-          {cockpit}
-          {persons}
+          <AuthContext.Provider
+            value={{
+              authenticated:this.state.authenticated,
+              login: this.loginHandler}}>
+            {cockpit}
+            {persons}
+          </AuthContext.Provider>
         </Aux>
     );
   }
