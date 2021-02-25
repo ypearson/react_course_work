@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import Aux from '../hoc/Aux';
+import withClass from '../hoc/withClass';
 
 // onClick event
 // https://reactjs.org/docs/events.html#mouse-events
@@ -20,7 +22,9 @@ class App extends Component {
       {id:1, name: 'Manu',      age: 29},
       {id:2, name: 'Stephanie', age: 26},
     ],
-    showPerson: false
+    showPerson: false,
+    showCockpit: true,
+    changeCounter:0,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -41,6 +45,7 @@ class App extends Component {
   componentDidUpdate() {
     console.log("[App.js] componentDidUpdate")
   }
+
   nameChangeHandler = (event, id) => {
 
     const personIndex = this.state.persons.findIndex(p => {
@@ -54,16 +59,28 @@ class App extends Component {
     const persons = [...this.state.persons]
     persons[personIndex] = person;
 
-    this.setState({persons:persons});
-  }
+    // This is scheduled, and may not execute immediately
+    // this.state may be a older state than anticipated
+    this.setState((prevState, props) => {
 
+      return {
+        persons:persons,
+        changeCounter:prevState.changeCounter+1
+         }
+        });
+    }
+
+  deleteCockpitHandler = () => {
+    const showCockpit = this.state.showCockpit;
+    this.setState({showCockpit:!showCockpit})
+    console.log(this.state);
+  }
   deletePersonHandler = (personIndex) => {
     // console.log(personIndex);
     // const persons = this.state.persons.slice() copy
     const persons = [...this.state.persons];
     persons.splice(personIndex,1);
     this.setState({persons:persons});
-
   }
 
   togglePersonHandler = () => {
@@ -73,34 +90,39 @@ class App extends Component {
 
   render() {
     console.log("[App.js] render");
+    console.log(this.state);
 
     let persons = null;
+    let cockpit = null;
 
     if (this.state.showPerson) {
       persons = (
-        <Persons 
+        <Persons
             persons={this.state.persons}
             deletePerson={this.deletePersonHandler}
-            togglePerson={()=>this.togglePersonHandler()} 
+            togglePerson={()=>this.togglePersonHandler()}
             nameChange={(event, id)=>this.nameChangeHandler(event, id)}/>
       );
     }
     // console.log("classes=", classes);
-    let cockpit=(
-      <Cockpit
-      title={this.props.appTitle} 
-      show = {this.state.showPerson}
-      persons={this.state.persons} 
-      click={this.togglePersonHandler}></Cockpit>
-    );
+    if(this.state.showCockpit) {
+      cockpit=(
+        <Cockpit
+        title={this.props.appTitle}
+        show={this.state.showPerson}
+        personsLength={this.state.persons.length}
+        click={this.togglePersonHandler}></Cockpit>
+      );
+    }
 
     return (
-        <div className={classes.App}>
+        <Aux>
+          <button onClick={this.deleteCockpitHandler}>Cockpit toggle</button>
           {cockpit}
           {persons}
-        </div>
+        </Aux>
     );
   }
 }
 
-export default App;
+export default withClass(App, classes.App);

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import Person from './Person/Person'
 
-class Persons extends Component {
+class Persons extends PureComponent {
 // const Persons = (props) => 
 // {
   state = '';
@@ -14,11 +14,22 @@ class Persons extends Component {
     console.log("[Persons.js] getDerivedStateFromProps");
     return state;
   }
-  
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log("[Persons.js] shouldComponetUpdate");
-    return true;
-  }
+  // Can prevent render() calls
+  // Instead of checking all prop values, just use PureComponent
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log("[Persons.js] shouldComponetUpdate");
+  //   if(nextProps.persons !== this.props.persons || 
+  //     nextProps.click    !== this.props.click   || 
+  //     nextProps.changed  !== this.props.changed) {
+        
+  //     console.log("[Persons.js] shouldComponetUpdate TRUE"); // Update, its NOT the same
+  //     return true;
+  //   } 
+  //   else {
+  //     console.log("[Persons.js] shouldComponetUpdate FALSE"); // Don't update, its the same
+  //     return false;
+  //   }
+  // }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
     console.log("[Persons.js] getSnapshotBeforeUpdate");
@@ -28,6 +39,12 @@ class Persons extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log("[Person.js] componentDidUpdate");
     console.log("componentDidUpdate", snapshot);
+  }
+
+  componentWillUnmount() {
+    // Clean up work done here
+    console.log("[Persons.js] componentWillUnmount");
+
   }
 
   render() {
