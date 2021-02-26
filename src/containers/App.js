@@ -119,8 +119,7 @@ class App extends Component {
         title={this.props.appTitle}
         show={this.state.showPerson}
         personsLength={this.state.persons.length}
-        click={this.togglePersonHandler}
-        login={this.loginHandler}/>
+        click={this.togglePersonHandler}/>
       );
     }
 
